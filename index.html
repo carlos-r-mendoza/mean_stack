@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<base href='/' />
+	<title>Sample MEAN Stack App</title>
+	<script src='javascript/bundle.js'></script>
 </head>
-<body>
-	<script type="text/javascript" src='bundle.js'></script>
-	<h1>Hello World!</h1>
+<body ng-app='MeanStack'>
+	<h1>Technical Test</h1>
+	<button ui-sref='main'>Test #1</button>
+	<div ui-view></div>
 </body>
 </html>

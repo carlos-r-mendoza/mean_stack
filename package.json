@@ -4,16 +4,22 @@
   "description": "AngularJS, Express, Node.js, MongoDB",
   "main": "app.js",
   "scripts": {
-    "build": "browserify app.js -o bundle.js",
-    "test": "echo \"Error: no test specified\" && exit 1" 
+    "build": "browserify ./public/javascript/app.js -o ./public/javascript/bundle.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "carlos",
   "license": "ISC",
   "dependencies": {
+    "angular": "^1.4.1",
+    "angular-ui-router": "^0.2.15",
     "express": "^4.13.0",
     "mongoose": "^4.0.6"
   },
   "devDependencies": {
-    "browserify": "^10.2.4"
+    "browserify": "^10.2.4",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-jshint": "^1.11.0",
+    "vinyl-transform": "^1.0.0"
   }
 }
