@@ -1,0 +1,19 @@
+{
+  "name": "mean_stack",
+  "version": "1.0.0",
+  "description": "AngularJS, Express, Node.js, MongoDB",
+  "main": "app.js",
+  "scripts": {
+    "build": "browserify app.js -o bundle.js",
+    "test": "echo \"Error: no test specified\" && exit 1" 
+  },
+  "author": "carlos",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.0",
+    "mongoose": "^4.0.6"
+  },
+  "devDependencies": {
+    "browserify": "^10.2.4"
+  }
+}
