@@ -1,11 +1,12 @@
 'use strict';
 //CommonJS modules for frontend JavaScript through Browserify
-require('angular/angular');
-require('angular-ui-router/release/angular-ui-router');
-//require('./public/javascript/**/*.js');
+require('../../bower_components/angular');
+require('../../bower_components/angular-ui-router/release/angular-ui-router');
+// require('./public/javascript/**/*.js');
 
 //initiation of AngularJS application
 var app = angular.module('MeanStack', ['ui.router']);
+module.exports = app;
 
 app.config(function ($locationProvider, $urlRouterProvider) {
     // This turns off hashbang urls (/#about) and changes it to something normal (/about)
@@ -15,19 +16,17 @@ app.config(function ($locationProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('main');
 });
 
+// AngularJS application files
+require('./controllers');
+
 //config of $stateProvider
 app.config(function ($stateProvider) {
 
 	$stateProvider
 		.state('main', {
 			url: '/',
-			templateUrl: 'templates/main.html',
-			controller: 'MainController'
+			templateUrl: 'templates/main.html'
 		});
 });
-console.log("HERE")
 
 
-app.controller('MainController', function($scope){
-	console.log('here');
-})

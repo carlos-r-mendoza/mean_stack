@@ -32665,14 +32665,19 @@ var minlengthDirective = function() {
 
 !window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
 },{}],3:[function(require,module,exports){
+require('./angular');
+module.exports = angular;
+
+},{"./angular":2}],4:[function(require,module,exports){
 'use strict';
 //CommonJS modules for frontend JavaScript through Browserify
-require('angular/angular');
-require('angular-ui-router/release/angular-ui-router');
-//require('./public/javascript/**/*.js');
+require('../../bower_components/angular');
+require('../../bower_components/angular-ui-router/release/angular-ui-router');
+// require('./public/javascript/**/*.js');
 
 //initiation of AngularJS application
 var app = angular.module('MeanStack', ['ui.router']);
+module.exports = app;
 
 app.config(function ($locationProvider, $urlRouterProvider) {
     // This turns off hashbang urls (/#about) and changes it to something normal (/about)
@@ -32682,20 +32687,28 @@ app.config(function ($locationProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('main');
 });
 
+// AngularJS application files
+require('./controllers');
+
 //config of $stateProvider
 app.config(function ($stateProvider) {
 
 	$stateProvider
 		.state('main', {
 			url: '/',
-			templateUrl: 'templates/main.html',
-			controller: 'MainController'
+			templateUrl: 'templates/main.html'
 		});
 });
-console.log("HERE")
 
 
-app.controller('MainController', function($scope){
-	console.log('here');
-})
-},{"angular-ui-router/release/angular-ui-router":1,"angular/angular":2}]},{},[3]);
+
+},{"../../bower_components/angular":3,"../../bower_components/angular-ui-router/release/angular-ui-router":1,"./controllers":5}],5:[function(require,module,exports){
+'use strict';
+var app = require('../app.js');
+//var app = require('angular').module('MeanStack');
+app.controller('Test1Controller', require('./test1.controller'));
+},{"../app.js":4,"./test1.controller":6}],6:[function(require,module,exports){
+module.exports = function($scope) {
+	console.log('Hereeee');
+}
+},{}]},{},[4]);

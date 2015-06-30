@@ -7,10 +7,11 @@ var path = require('path');
 module.exports = app;
 
 var publicPath = path.join(__dirname, '../public');
+var bowerPath = path.join(__dirname, '../bower_components');
 var indexHtmlPath = path.join(__dirname, '../index.html');
 
 app.use(express.static(publicPath));
-
+app.use(express.static(bowerPath));
 
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }));

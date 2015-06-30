@@ -3,11 +3,14 @@
 <head>
 	<base href='/' />
 	<title>Sample MEAN Stack App</title>
-	<script src='javascript/bundle.js'></script>
+	<link rel="stylesheet" type="text/css" href="bootstrap/dist/css/bootstrap.css" />
+	<script type="text/javascript" src='javascript/bundle.js'></script>
+	<script type="text/javascript" src='jquery/dist/jquery.min.js'></script>
+	<script type="text/javascript" src='bootstrap/dist/js/bootstrap.min.js'></script>
 </head>
 <body ng-app='MeanStack'>
 	<h1>Technical Test</h1>
-	<button ui-sref='main'>Test #1</button>
+	<button class='btn btn-primary' ui-sref='main'>Test #1</button>
 	<div ui-view></div>
 </body>
 </html>
