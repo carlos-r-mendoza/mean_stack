@@ -18,6 +18,9 @@ app.config(function ($locationProvider, $urlRouterProvider) {
 
 // AngularJS application files
 require('./controllers');
+require('./factories');
+// require('./directives');
+// require('./filters');
 
 //config of $stateProvider
 app.config(function ($stateProvider) {
@@ -25,7 +28,8 @@ app.config(function ($stateProvider) {
 	$stateProvider
 		.state('main', {
 			url: '/',
-			templateUrl: 'templates/main.html'
+			templateUrl: 'templates/main.html',
+			controller: 'Test1Controller'
 		});
 });
 
