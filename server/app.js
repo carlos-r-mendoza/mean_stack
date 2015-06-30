@@ -27,8 +27,6 @@ app.use(express.static(bowerPath));
 
 app.use('/api', require('./routes'));
 
-
-
 //route to index.html or any url not registered
 app.get('/*', function(req, res){
 	res.sendFile(indexHtmlPath);
