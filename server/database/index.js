@@ -1,3 +1,5 @@
+'use strict';
+
 var mongoose = require('mongoose');
 
 var db = mongoose.connect('mongodb://localhost/mean-stack').connection;
