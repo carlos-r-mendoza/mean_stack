@@ -32688,10 +32688,11 @@ app.config(function ($locationProvider, $urlRouterProvider) {
 });
 
 // AngularJS application files
+require('./filters');
 require('./controllers');
 require('./factories');
 require('./directives');
-// require('./filters');
+
 
 //config of $stateProvider
 app.config(function ($stateProvider) {
@@ -32706,11 +32707,13 @@ app.config(function ($stateProvider) {
 
 //201 for created forms
 
-},{"../../bower_components/angular":3,"../../bower_components/angular-ui-router/release/angular-ui-router":1,"./controllers":5,"./directives":7,"./factories":9}],5:[function(require,module,exports){
+},{"../../bower_components/angular":3,"../../bower_components/angular-ui-router/release/angular-ui-router":1,"./controllers":5,"./directives":7,"./factories":9,"./filters":11}],5:[function(require,module,exports){
 'use strict';
 var app = require('../app.js');
 app.controller('Test1Controller', require('./test1.controller'));
 },{"../app.js":4,"./test1.controller":6}],6:[function(require,module,exports){
+'use strict';
+
 module.exports = function($scope, Test1Factory) {
 
 	$scope.customer = {};
@@ -32719,7 +32722,9 @@ module.exports = function($scope, Test1Factory) {
 	// obtains all existing customers when controller is loaded
 	Test1Factory.getCustomers()
 		.then(function(customers){
+			console.log(customers)
 			$scope.customers = customers;
+			// this creates a copy of the customers data, not a reference
 			$scope.originalCustomers = angular.copy($scope.customers);
 		});
 
@@ -32728,6 +32733,7 @@ module.exports = function($scope, Test1Factory) {
 
 	// adds new customer
 	$scope.addCustomer = function(customer) {
+		customer.createdAt = new Date();
 		Test1Factory.addCustomer(customer)
 			.then(function(addedCustomer){
 				// adds new customer to Existing Customers in the view
@@ -32739,10 +32745,9 @@ module.exports = function($scope, Test1Factory) {
 
 	// updates existing customer
 	$scope.updateCustomer = function(customer) {
-		console.log(customer)
+		customer.updatedAt = new Date();
 		Test1Factory.updateCustomer(customer)
 			.then(function(updatedCustomer){
-				console.log('updated', updatedCustomer)
 				customer = updatedCustomer;
 			});
 	};
@@ -32752,7 +32757,6 @@ module.exports = function($scope, Test1Factory) {
 		Test1Factory.deleteCustomer(customerId)
 			.then(function(){
 				// removes customer from the view
-				console.log('gerer')
 				$scope.customers.splice(indx, 1);
 			});
 	};
@@ -32773,13 +32777,34 @@ module.exports = function($scope, Test1Factory) {
 		}
 	};
 
-	//
+	// for search filter
+	$scope.search = { query: "" }
+
+    $scope.isStatus = function(query){
+      return function(el){
+        var keys = Object.keys(query);
+        if(keys.length === 0) return true;
+        return dotNotationValue(el,keys[0]) == query[keys[0]];
+      }
+    }
+
+    function dotNotationValue(obj, str){
+      var query = str.split('.');
+      var testing = _.clone(obj, true);
+      for(var i = 0; i < query.length; i++){
+        if(!testing) return testing;
+        testing = testing[query[i]];
+      }
+      return testing;
+    }
 }
 },{}],7:[function(require,module,exports){
 'use strict';
 var app = require('../app.js');
 app.controller('form', require('./test1.directives'));
 },{"../app.js":4,"./test1.directives":8}],8:[function(require,module,exports){
+'use strict';
+
 module.exports = function() {
 	return {
     	templateUrl: 'components/directives/mlsDetails/mlsDetails.html',
@@ -32823,4 +32848,23 @@ module.exports = function($http) {
 		}
 	}
 }
+},{}],11:[function(require,module,exports){
+'use strict';
+var app = require('../app.js');
+app.filter('searchCustomersFilter', require('./search'));
+},{"../app.js":4,"./search":12}],12:[function(require,module,exports){
+'use strict';
+
+module.exports = function(customers, searchQuery) {
+			if(customers) {
+				return customers
+				//.filter(function(customer){
+				// 	var searchString = "";
+				// 	for(var key in customer) {
+				// 		searchString += listing[key];
+				// 	}
+				// 	return searchString.toLowerCase().indexOf(searchQuery.toLowerCase()) != -1;
+				// })
+			} 
+		}
 },{}]},{},[4]);
