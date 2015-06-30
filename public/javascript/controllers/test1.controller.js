@@ -40,6 +40,7 @@ module.exports = function($scope, Test1Factory) {
 
 	// delete existing customer
 	$scope.deleteCustomer = function(customerId, indx) {
+		console.log(indx)
 		Test1Factory.deleteCustomer(customerId)
 			.then(function(){
 				// removes customer from the view
@@ -63,24 +64,8 @@ module.exports = function($scope, Test1Factory) {
 		}
 	};
 
-	// for search filter
-	$scope.search = { query: "" }
+	// for search filte
+	$scope.search = "";
 
-    $scope.isStatus = function(query){
-      return function(el){
-        var keys = Object.keys(query);
-        if(keys.length === 0) return true;
-        return dotNotationValue(el,keys[0]) == query[keys[0]];
-      }
-    }
-
-    function dotNotationValue(obj, str){
-      var query = str.split('.');
-      var testing = _.clone(obj, true);
-      for(var i = 0; i < query.length; i++){
-        if(!testing) return testing;
-        testing = testing[query[i]];
-      }
-      return testing;
-    }
+	//
 }

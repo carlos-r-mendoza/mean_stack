@@ -1,110 +1,41 @@
 <div class='row well'>
+	<button class='btn btn-primary btn btn-primary btn-lg' ng-click='modifyColSize()' ng-hide='searchBar'>SEARCH</button>
+	<button class='btn btn-primary btn-lg' id='searchToggle' ng-click='modifyColSize()' ng-show='searchBar'>NEW CUSTOMER ENTRY FORM</button><br>
+	<div class='form-group' ng-show='searchBar'>
+		<input type='text' class='form-control' placeholder='Search...' ng-model="search">
+	</div>
 	<div class='col-sm-{{colSize}} col-md-{{colSize}} col-lg-{{colSize}}'>
-		<button class='btn btn-primary' ng-click='modifyColSize()' ng-hide='searchBar'>SEARCH</button>
-		<button class='btn btn-primary' ng-click='modifyColSize()' ng-show='searchBar'>NEW CUSTOMER ENTRY</button><br>
-		<div class='form-group'>
-			<input type='text' class='form-control' placeholder='Search...' ng-model="search.query" ng-show='searchBar'>
-		</div>
 		<h2 class='text-center'>Existing Customers</h2>
-		<div ng-repeat='customer in customers'>
-			<button class='btn btn-primary' ng-click='customerInfo = !customerInfo'>More Info</button>
-			<h4 class='inline'>
-				<strong>Name: </strong>{{customer.firstName}} {{customer.lastName}} | 
-				<strong>Email: </strong>{{customer.email}} | 
-				<strong>Primary Phone: </strong>{{customer.phones[0]}} | 
-				<strong>City: </strong>{{customer.address.city}}, {{customer.address.state}}
-			</h4>
+		<div ng-repeat='customer in customers | filter:search'>
+			<button class='btn btn-info marginBottom' ng-click='customerInfo = !customerInfo'>More Info</button>
+			<span class='inline'>
+				<strong>Name: </strong>{{customer.firstName | noInfoFilter}} {{customer.lastName | noInfoFilter}} | 
+				<strong>Email: </strong>{{customer.email | noInfoFilter}} | 
+				<strong>Primary Phone: </strong>{{customer.phones[0] | noInfoFilter}}
+			</span>
 			<div class='row' ng-if='customerInfo'>
-				<p>Entry was created at {{customer.createdAt | date:'medium'}}</p>
-				<p ng-if='customer.updatedAt'>Entry was last updated at {{customer.updatedAt | date:'medium'}}</p>
-				<form name='updateCustomerForm' ng-submit='updateCustomerForm.$valid && updateCustomer(customer)' novalidate>
-					<div class='form-group'>
-						<label for='firstNameInput1'>First Name</label>
-						<input type='text' class='form-control' id='firstNameInput1' ng-model='customer.firstName' ng-value='customer.firstName' required/>
-					</div>
-					<div class='form-group'>
-						<label for='lastNameInput1'>Last Name</label>
-						<input type='text' class='form-control' id='lastNameInput1' ng-model='customer.lastName' ng-value='customer.lastName' required/>
-					</div>
-					<div class='form-group'>
-						<label for='emailInput1'>Email</label>
-						<input type='email' class='form-control' id='emailInput1' ng-model='customer.email' ng-value='customer.email'/ required>
-					</div>
-					<div class='form-group'>
-						<label for='phonesInput1'>Phones</label>	
-						<input type='text' class='form-control' id='phonesInput1' ng-model='customer.phones' ng-list ng-value='customer.phones'/ >
-					</div>
-					<div class='form-group'>
-						<label for='street1Input1'>Street1</label>	
-						<input type='text' class='form-control' id='street1Input1' ng-model='customer.address.street1' ng-value='customer.address.street1'/ >
-					</div>
-					<div class='form-group'>
-						<label for='street2Input1'>Street 2</label>
-						<input type='text' class='form-control' id='street2Input1' ng-model='customer.address.street2' ng-value='customer.address.street2'/ >
-					</div>	
-					<div class='form-group'>
-						<label for='cityInput1'>City</label>
-						<input type='text' class='form-control' id='cityInput1' ng-model='customer.address.city' ng-value='customer.address.city'/ >
-					</div>	
-					<div class='form-group'>
-						<label for='stateInput1'>State</label>
-						<input type='text' class='form-control' id='stateInput1' ng-model='customer.address.state' ng-value='customer.address.city'/ >	
-					</div>
-					<input type='submit' class='btn btn-success' value='Update' />
-					<button class='btn btn-danger' ng-click='deleteCustomer(customer._id, $index)'>Delete</button>
-				</form>
+				<p class='updatedInfo text-center'>Entry was created on <strong>{{customer.createdAt | date:'medium'}}</strong></p>
+				<p class='updatedInfo text-center' ng-if='customer.updatedAt'>Entry was last updated on <strong>{{customer.updatedAt | date:'medium'}}</strong></p>
+				<update-customer-form></update-customer-form>
 			</div>
+			<div class='borderBottom'></div>
 		</div>
 
 	</div>
 	<div class='col-sm-6 col-md-6 col-lg-6' ng-hide='searchBar'>			
 		<h2 class='text-center'>New Customer Entry Form</h2>
 		<blockquote>
-			<strong>First Name:</strong> {{newCustomer.firstName}}<br>
-			<strong>Last Name:</strong> {{newCustomer.lastName}}<br>
-			<strong>Email:</strong> {{newCustomer.emails}}<br>
-			<strong>Phones:</strong> {{newCustomer.phones}}<br>
-			<strong>Street 1:</strong> {{newCustomer.street1}}<br>
-			<strong>Street 2:</strong> {{newCustomer.street2}}<br>
-			<strong>City:</strong> {{newCustomer.city}}<br>
-			<strong>State:</strong> {{newCustomer.state}}<br>
+			<strong>First Name:</strong> {{newCustomer.firstName | noInfoFilter}}<br>
+			<strong>Last Name:</strong> {{newCustomer.lastName | noInfoFilter}}<br>
+			<strong>Email:</strong> {{newCustomer.email | noInfoFilter}}<br>
+			<strong>Phones:</strong><span> {{newCustomer.phones[0] | noInfoFilter}}</span><br>
+			<strong>Street 1:</strong> {{newCustomer.address.street1 | noInfoFilter}}<br>
+			<strong>Street 2:</strong> {{newCustomer.address.street2 | noInfoFilter}}<br>
+			<strong>City:</strong> {{newCustomer.address.city | noInfoFilter}}<br>
+			<strong>State:</strong> {{newCustomer.address.state | noInfoFilter}}<br>
 
 		</blockquote>
-		<form name='addCustomerForm' ng-submit='addCustomerForm.$valid && addCustomer(newCustomer)' novalidate>
-			<div class='form-group'>
-				<label for='firstNameInput'>First Name</label>
-				<input type='text' class='form-control' id='firstNameInput' ng-model='newCustomer.firstName' required/>
-			</div>
-			<div class='form-group'>
-				<label for='lastNameInput'>Last Name</label>
-				<input type='text' class='form-control' id='lastNameInput' ng-model='newCustomer.lastName' required/>
-			</div>
-			<div class='form-group'>
-				<label for='emailInput'>Email</label>
-				<input type='email' class='form-control' id='emailInput' ng-model='newCustomer.email' required/>
-			</div>
-			<div class='form-group'>
-				<label for='phonesInput'>Phones</label>
-				<input type='text' class='form-control' id='phonesInput' ng-list ng-model='newCustomer.phones'/>
-			</div>
-			<div class='form-group'>
-				<label for='street1Input'>Street 1</label>
-					<input type='text' class='form-control' id='street1Input' ng-model='newCustomer.address.street1'/>
-			</div>
-			<div class='form-group'>
-				<label for='street2Input'>Street 2</label>
-				<input type='text' class='form-control' id='street2Input' ng-model='newCustomer.address.street2'/>
-			</div>
-			<div class='form-group'>
-				<label for='cityInput'>City</label>
-				<input type='text' class='form-control' id='cityInput' ng-model='newCustomer.address.city'/>
-			</div>
-			<div class='form-group'>
-				<label for='stateInput'>State</label>
-				<input type='text' class='form-control' id='stateInput' ng-model='newCustomer.address.state'/>
-			</div>
-			<input type='submit' value='Submit' />
-		</form>
-			<button ng-click='newCustomer = {}'>Reset</button>
+		<new-customer-form></new-customer-form>
+			
 	</div>
 </div>

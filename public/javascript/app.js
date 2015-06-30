@@ -17,10 +17,10 @@ app.config(function ($locationProvider, $urlRouterProvider) {
 });
 
 // AngularJS application files
-// require('./filters');
+require('./filters');
+require('./directives');
 require('./controllers');
 require('./factories');
-require('./directives');
 
 
 //config of $stateProvider

@@ -1,3 +1,4 @@
 'use strict';
 var app = require('../app.js');
-app.controller('form', require('./test1.directives'));
+app.directive('newCustomerForm', require('./new-customer-form/new-customer-form.js'));
+app.directive('updateCustomerForm', require('./update-customer-form/update-customer-form.js'));

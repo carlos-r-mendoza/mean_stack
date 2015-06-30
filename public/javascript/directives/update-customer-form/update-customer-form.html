@@ -1,0 +1,41 @@
+<form id='updateForm' name='updateCustomerForm' ng-submit='updateCustomerForm.$valid && updateCustomer(customer)' novalidate>
+	<div class='form-group'>
+		<label for='firstNameInput1'>First Name</label>
+		<input type='text' class='form-control' id='firstNameInput1' ng-model='customer.firstName' ng-value='customer.firstName' required/>
+	</div>
+	<div class='form-group'>
+		<label for='lastNameInput1'>Last Name</label>
+		<input type='text' class='form-control' id='lastNameInput1' ng-model='customer.lastName' ng-value='customer.lastName' required/>
+	</div>
+	<div class='form-group'>
+		<label for='emailInput1'>Email</label>
+		<input type='email' class='form-control' id='emailInput1' ng-model='customer.email' ng-value='customer.email'/ required>
+	</div>
+	<div class='form-group'>
+		<label for='phonesInput1'>Phones</label>	
+		<input type='text' class='form-control' id='phonesInput1' ng-model='customer.phones' ng-list ng-value='customer.phones'/ >
+	</div>
+	<div class='form-group'>
+		<label for='street1Input1'>Street1</label>	
+		<input type='text' class='form-control' id='street1Input1' ng-model='customer.address.street1' ng-value='customer.address.street1'/ >
+	</div>
+	<div class='form-group'>
+		<label for='street2Input1'>Street 2</label>
+		<input type='text' class='form-control' id='street2Input1' ng-model='customer.address.street2' ng-value='customer.address.street2'/ >
+	</div>	
+	<div class='form-group'>
+		<label for='cityInput1'>City</label>
+		<input type='text' class='form-control' id='cityInput1' ng-model='customer.address.city' ng-value='customer.address.city'/ >
+	</div>	
+	<div class='form-group'>
+		<label for='stateInput1'>State</label>
+		<input type='text' class='form-control' id='stateInput1' ng-model='customer.address.state' ng-value='customer.address.city'/ >	
+	</div>
+	<input type='submit' class='btn btn-success' value='Update' ng-click='updateAlert = true' />
+	<button class='btn btn-danger' ng-click='deleteCustomer(customer._id, $index)'>Delete</button>
+	
+	<div class='alert alert-success alert-dismissible' role='alert' ng-show='updateAlert'>
+ 	<button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click='updateAlert = false'><span aria-hidden="true">&times;	</span></button>
+		<strong>Success!</strong>You have successfully updated the entry!
+	</div>
+</form>

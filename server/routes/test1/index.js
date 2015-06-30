@@ -32,7 +32,7 @@ var router = require('express').Router(),
 		Customer.findByIdAndUpdate(req.params.id, { $set: req.body}, function (err, customer){
 			console.log(err);
 			if(err) { return handleError(res, err); }
-			Customer.findById(customer._id)
+			Customer.findById(req.params.id)
 				.exec(function(err, customer){
 					res.status(200).json(customer);
 				});

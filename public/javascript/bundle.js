@@ -32689,9 +32689,9 @@ app.config(function ($locationProvider, $urlRouterProvider) {
 
 // AngularJS application files
 require('./filters');
+require('./directives');
 require('./controllers');
 require('./factories');
-require('./directives');
 
 
 //config of $stateProvider
@@ -32707,7 +32707,7 @@ app.config(function ($stateProvider) {
 
 //201 for created forms
 
-},{"../../bower_components/angular":3,"../../bower_components/angular-ui-router/release/angular-ui-router":1,"./controllers":5,"./directives":7,"./factories":9,"./filters":11}],5:[function(require,module,exports){
+},{"../../bower_components/angular":3,"../../bower_components/angular-ui-router/release/angular-ui-router":1,"./controllers":5,"./directives":7,"./factories":10,"./filters":13}],5:[function(require,module,exports){
 'use strict';
 var app = require('../app.js');
 app.controller('Test1Controller', require('./test1.controller'));
@@ -32754,6 +32754,7 @@ module.exports = function($scope, Test1Factory) {
 
 	// delete existing customer
 	$scope.deleteCustomer = function(customerId, indx) {
+		console.log(indx)
 		Test1Factory.deleteCustomer(customerId)
 			.then(function(){
 				// removes customer from the view
@@ -32777,48 +32778,41 @@ module.exports = function($scope, Test1Factory) {
 		}
 	};
 
-	// for search filter
-	$scope.search = { query: "" }
+	// for search filte
+	$scope.search = "";
 
-    $scope.isStatus = function(query){
-      return function(el){
-        var keys = Object.keys(query);
-        if(keys.length === 0) return true;
-        return dotNotationValue(el,keys[0]) == query[keys[0]];
-      }
-    }
-
-    function dotNotationValue(obj, str){
-      var query = str.split('.');
-      var testing = _.clone(obj, true);
-      for(var i = 0; i < query.length; i++){
-        if(!testing) return testing;
-        testing = testing[query[i]];
-      }
-      return testing;
-    }
+	//
 }
 },{}],7:[function(require,module,exports){
 'use strict';
 var app = require('../app.js');
-app.controller('form', require('./test1.directives'));
-},{"../app.js":4,"./test1.directives":8}],8:[function(require,module,exports){
+app.directive('newCustomerForm', require('./new-customer-form/new-customer-form.js'));
+app.directive('updateCustomerForm', require('./update-customer-form/update-customer-form.js'));
+},{"../app.js":4,"./new-customer-form/new-customer-form.js":8,"./update-customer-form/update-customer-form.js":9}],8:[function(require,module,exports){
 'use strict';
 
 module.exports = function() {
 	return {
-    	templateUrl: 'components/directives/mlsDetails/mlsDetails.html',
-      	restrict: 'EA',
-      	link: function (scope, element, attrs) {
-      	}
+		restrict: 'E',
+    	templateUrl: 'javascript/directives/new-customer-form/new-customer-form.html'
 	}
 }
 
 },{}],9:[function(require,module,exports){
 'use strict';
+
+module.exports = function() {
+	return {
+		restrict: 'E',
+    	templateUrl: 'javascript/directives/update-customer-form/update-customer-form.html'
+	}
+}
+
+},{}],10:[function(require,module,exports){
+'use strict';
 var app = require('../app.js');
 app.factory('Test1Factory', require('./test1.factory'));
-},{"../app.js":4,"./test1.factory":10}],10:[function(require,module,exports){
+},{"../app.js":4,"./test1.factory":11}],11:[function(require,module,exports){
 module.exports = function($http) {
 	return {
 		getCustomers: function() {
@@ -32848,23 +32842,20 @@ module.exports = function($http) {
 		}
 	}
 }
-},{}],11:[function(require,module,exports){
-'use strict';
-var app = require('../app.js');
-app.filter('searchCustomersFilter', require('./search'));
-},{"../app.js":4,"./search":12}],12:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
-module.exports = function(customers, searchQuery) {
-			if(customers) {
-				return customers
-				//.filter(function(customer){
-				// 	var searchString = "";
-				// 	for(var key in customer) {
-				// 		searchString += listing[key];
-				// 	}
-				// 	return searchString.toLowerCase().indexOf(searchQuery.toLowerCase()) != -1;
-				// })
-			} 
+module.exports = function() {
+		return function(input) {
+	    	if(!input) {
+	    		return "---"
+	     	} else {
+	     		return input;
+	     	}
 		}
-},{}]},{},[4]);
+	}
+},{}],13:[function(require,module,exports){
+'use strict';
+var app = require('../app.js');
+app.filter('noInfoFilter', require('./filters.js'));
+},{"../app.js":4,"./filters.js":12}]},{},[4]);
