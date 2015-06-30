@@ -61,19 +61,4 @@ var router = require('express').Router(),
 	function handleError(res, err) {
   		return res.status(500).send(err);
 	}
-	// 	Customer.create({ firstName: "Carlos",
-	// 				  lastName: "M",
-	// 				  emails: ['test1@test.com, test2@test.com, test3@test.com'],
-	// 				  dob: 'n/a',
-	// 				  address: {
-	// 				  	street1: 'Test Street',
-	// 				  	street2: 'Apt 1A',
-	// 				  	city: 'New York',
-	// 				  	state: 'New York'
-	// 				  },
-	// 				  createAt: date,
-	// 				  updatedAt: date,
-	// 				  } , function(err, customer) {
-	// 	return res.json(customer);	
 
-	// });

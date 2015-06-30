@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function($scope, Test1Factory) {
 
 	$scope.customer = {};
