@@ -8,10 +8,7 @@ var router = require('express').Router(),
 
 	// Get all customers
 	router.get('/', function (req, res){
-		console.log("YEAAS");
 		Customer.find({})
-			.populate('address')
-			.populate('productsPurchased')
 			.exec(function (err, customers) {
 				if(err) { return handleError(res, err); }
 				res.status(200).json(customers);
@@ -20,11 +17,9 @@ var router = require('express').Router(),
 
 	// Create new customer
 	router.post('/add-customer', function (req, res) {
-		console.log(req.body)
 		Customer.create(req.body, function(err, customer) {
 			if(err) { return handleError(res, err); }
 			Customer.findById(customer._id)
-				.populate('address')
 				.exec(function(err, customer){
 					if(err) { return handleError(res, err); }
 					return res.status(201).json(customer);	
@@ -35,10 +30,9 @@ var router = require('express').Router(),
 	// Update existing customer
 	router.put('/update-customer/:id', function (req, res) {
 		Customer.findByIdAndUpdate(req.params.id, { $set: req.body}, function (err, customer){
+			console.log(err);
 			if(err) { return handleError(res, err); }
-			console.log("UPDATEED", customer)
 			Customer.findById(customer._id)
-				.populate('address')
 				.exec(function(err, customer){
 					res.status(200).json(customer);
 				});

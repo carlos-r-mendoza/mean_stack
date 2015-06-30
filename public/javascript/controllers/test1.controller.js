@@ -8,7 +8,9 @@ module.exports = function($scope, Test1Factory) {
 	// obtains all existing customers when controller is loaded
 	Test1Factory.getCustomers()
 		.then(function(customers){
+			console.log(customers)
 			$scope.customers = customers;
+			// this creates a copy of the customers data, not a reference
 			$scope.originalCustomers = angular.copy($scope.customers);
 		});
 
@@ -17,6 +19,7 @@ module.exports = function($scope, Test1Factory) {
 
 	// adds new customer
 	$scope.addCustomer = function(customer) {
+		customer.createdAt = new Date();
 		Test1Factory.addCustomer(customer)
 			.then(function(addedCustomer){
 				// adds new customer to Existing Customers in the view
@@ -28,10 +31,9 @@ module.exports = function($scope, Test1Factory) {
 
 	// updates existing customer
 	$scope.updateCustomer = function(customer) {
-		console.log(customer)
+		customer.updatedAt = new Date();
 		Test1Factory.updateCustomer(customer)
 			.then(function(updatedCustomer){
-				console.log('updated', updatedCustomer)
 				customer = updatedCustomer;
 			});
 	};
@@ -41,7 +43,6 @@ module.exports = function($scope, Test1Factory) {
 		Test1Factory.deleteCustomer(customerId)
 			.then(function(){
 				// removes customer from the view
-				console.log('gerer')
 				$scope.customers.splice(indx, 1);
 			});
 	};
@@ -62,5 +63,24 @@ module.exports = function($scope, Test1Factory) {
 		}
 	};
 
-	//
+	// for search filter
+	$scope.search = { query: "" }
+
+    $scope.isStatus = function(query){
+      return function(el){
+        var keys = Object.keys(query);
+        if(keys.length === 0) return true;
+        return dotNotationValue(el,keys[0]) == query[keys[0]];
+      }
+    }
+
+    function dotNotationValue(obj, str){
+      var query = str.split('.');
+      var testing = _.clone(obj, true);
+      for(var i = 0; i < query.length; i++){
+        if(!testing) return testing;
+        testing = testing[query[i]];
+      }
+      return testing;
+    }
 }
