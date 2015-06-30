@@ -32690,7 +32690,7 @@ app.config(function ($locationProvider, $urlRouterProvider) {
 // AngularJS application files
 require('./controllers');
 require('./factories');
-// require('./directives');
+require('./directives');
 // require('./filters');
 
 //config of $stateProvider
@@ -32699,37 +32699,127 @@ app.config(function ($stateProvider) {
 	$stateProvider
 		.state('main', {
 			url: '/',
-			templateUrl: 'templates/main.html',
+			templateUrl: 'templates/test1.html',
 			controller: 'Test1Controller'
 		});
 });
 
+//201 for created forms
 
-
-},{"../../bower_components/angular":3,"../../bower_components/angular-ui-router/release/angular-ui-router":1,"./controllers":5,"./factories":7}],5:[function(require,module,exports){
+},{"../../bower_components/angular":3,"../../bower_components/angular-ui-router/release/angular-ui-router":1,"./controllers":5,"./directives":7,"./factories":9}],5:[function(require,module,exports){
 'use strict';
 var app = require('../app.js');
 app.controller('Test1Controller', require('./test1.controller'));
 },{"../app.js":4,"./test1.controller":6}],6:[function(require,module,exports){
 module.exports = function($scope, Test1Factory) {
-	console.log('Hereeee');
-	Test1Factory.getCustomersInfo()
-		.then(function(info){
-			console.log('INFO!', info);
-		})
+
+	$scope.customer = {};
+	$scope.originalCustomers = {};
+	
+	// obtains all existing customers when controller is loaded
+	Test1Factory.getCustomers()
+		.then(function(customers){
+			$scope.customers = customers;
+			$scope.originalCustomers = angular.copy($scope.customers);
+		});
+
+	// two-way data binding for new customer info
+	$scope.newCustomer = {};
+
+	// adds new customer
+	$scope.addCustomer = function(customer) {
+		Test1Factory.addCustomer(customer)
+			.then(function(addedCustomer){
+				// adds new customer to Existing Customers in the view
+				$scope.customers.push(addedCustomer);
+				// clears form when submitted
+				$scope.newCustomer = {};
+			})		
+	};
+
+	// updates existing customer
+	$scope.updateCustomer = function(customer) {
+		console.log(customer)
+		Test1Factory.updateCustomer(customer)
+			.then(function(updatedCustomer){
+				console.log('updated', updatedCustomer)
+				customer = updatedCustomer;
+			});
+	};
+
+	// delete existing customer
+	$scope.deleteCustomer = function(customerId, indx) {
+		Test1Factory.deleteCustomer(customerId)
+			.then(function(){
+				// removes customer from the view
+				console.log('gerer')
+				$scope.customers.splice(indx, 1);
+			});
+	};
+
+	// hides search bar when controller is loaded
+	$scope.searchBar = false;
+	// sets column size when controller is loaded
+	$scope.colSize = 6;
+
+	$scope.modifyColSize = function() {
+		// shows/hides search input
+		$scope.searchBar = !$scope.searchBar;
+		// makes columns in view dynamic
+		if($scope.searchBar) {
+			$scope.colSize = 12;
+		} else {
+			$scope.colSize = 6;
+		}
+	};
+
+	//
 }
 },{}],7:[function(require,module,exports){
 'use strict';
 var app = require('../app.js');
+app.controller('form', require('./test1.directives'));
+},{"../app.js":4,"./test1.directives":8}],8:[function(require,module,exports){
+module.exports = function() {
+	return {
+    	templateUrl: 'components/directives/mlsDetails/mlsDetails.html',
+      	restrict: 'EA',
+      	link: function (scope, element, attrs) {
+      	}
+	}
+}
+
+},{}],9:[function(require,module,exports){
+'use strict';
+var app = require('../app.js');
 app.factory('Test1Factory', require('./test1.factory'));
-},{"../app.js":4,"./test1.factory":8}],8:[function(require,module,exports){
+},{"../app.js":4,"./test1.factory":10}],10:[function(require,module,exports){
 module.exports = function($http) {
 	return {
-		getCustomersInfo: function() {
-			return $http.get('api/test1/customers')
+		getCustomers: function() {
+			return $http.get('api/test1')
 				.then(function(response){
-					console.log('dat', response.data);
+					return response.data;
 				})
+		}, 
+		addCustomer: function(customer) {
+			return $http.post('api/test1/add-customer', customer)
+				.then(function(response){
+					return response.data;
+				})
+		},
+		updateCustomer: function(customer) {
+			return $http.put('api/test1/update-customer/' + customer._id, customer)
+				.then(function(response){
+					return response.data;
+				})
+		},
+		deleteCustomer: function(customerId) {
+			return $http.delete('api/test1/delete-customer/' + customerId)
+				.then(function(response){
+					console.log('he',response)
+					return response;
+				});
 		}
 	}
 }

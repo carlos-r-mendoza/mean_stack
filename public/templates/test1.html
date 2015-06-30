@@ -1,0 +1,71 @@
+<div class='row well'>
+	<div class='col-sm-{{colSize}} col-md-{{colSize}} col-lg-{{colSize}}'>
+		<button class='btn btn-primary' ng-click='modifyColSize()' ng-hide='searchBar'>SEARCH</button>
+		<button class='btn btn-primary' ng-click='modifyColSize()' ng-show='searchBar'>NEW CUSTOMER ENTRY</button><br>
+		<input type='text' placeholder='Search...'/ ng-show='searchBar'>
+		<h2 class='text-center'>Existing Customers</h2>
+		<div ng-repeat='customer in customers'>
+			<button class='btn btn-primary' ng-click='customerInfo = !customerInfo'>More Info</button>
+			<h4 class='inline'>
+				<strong>Name: </strong>{{customer.firstName}} {{customer.lastName}} | 
+				<strong>Email: </strong>{{customer.email}} | 
+				<strong>Primary Phone: </strong>{{customer.phones[0]}} | 
+				<strong>City: </strong>{{customer.address.city}}, {{customer.address.state}}
+			</h4>
+			<div class='row' ng-if='customerInfo'>
+				<form name='updateCustomerForm' ng-submit='updateCustomerForm.$valid && updateCustomer(customer)' novalidate>
+					First Name: <input type='text' ng-model='customer.firstName' ng-value='customer.firstName' required/>
+					Last Name: <input type='text' ng-model='customer.lastName' ng-value='customer.lastName' required/>
+					Email: <input type='email' ng-model='customer.email' ng-value='customer.email'/ required>
+					Phones: <input type='text' ng-model='customer.phones' ng-value='customer.phones'/ >
+					Street1: <input type='text' ng-model='customer.address.street1' ng-value='customer.address.street1'/ >
+					Street2: <input type='text' ng-model='customer.address.street2' ng-value='customer.address.street2'/ >
+					City: <input type='text' ng-model='customer.address.city' ng-value='customer.address.city'/ >
+					<input type='submit' value='Update' />
+				</form>
+				<button class='btn btn-default' ng-click='deleteCustomer(customer._id, $index)'>Delete</button>
+				<p>Entry was created at {{customer.createAt | date:'medium'}}</p>
+			</div>
+		</div>
+
+	</div>
+	<div class='col-sm-6 col-md-6 col-lg-6' ng-hide='searchBar'>			
+		<h2 class='text-center'>New Customer Entry Form</h2>
+		<blockquote>
+			<strong>First Name:</strong> {{newCustomer.firstName}}<br>
+			<strong>Last Name:</strong> {{newCustomer.lastName}}<br>
+			<strong>Email:</strong> {{newCustomer.emails}}<br>
+			<strong>Phones:</strong> {{newCustomer.phones}}<br>
+			<strong>Street 1:</strong> {{newCustomer.street1}}<br>
+			<strong>Street 2:</strong> {{newCustomer.street2}}<br>
+			<strong>City:</strong> {{newCustomer.city}}<br>
+			<strong>State:</strong> {{newCustomer.state}}<br>
+
+		</blockquote>
+		<form name='addCustomerForm' ng-submit='addCustomerForm.$valid && addCustomer(newCustomer)' novalidate>
+			First Name: <input type='text' ng-model='newCustomer.firstName' required/>
+			Last Name: <input type='text' ng-model='newCustomer.lastName' required/>
+			Email: <input type='email' ng-model='newCustomer.email' required/>
+			Phones: <input type='text' ng-model='newCustomer.phones'/>
+			Street 1: <input type='text' ng-model='newCustomer.address.street1'/>
+			Street 2: <input type='text' ng-model='newCustomer.address.street2'/>
+			City: <input type='text' ng-model='newCustomer.address.city'/>
+			State:
+			<input type='radio' value='product' ng-model='newCustomer.product' />
+			<input type='submit' value='Submit' />
+		</form>
+	</div>
+</div>
+
+<style type="text/css">
+	.inline {
+		display: inline-block;
+	}
+	.ng-invalid.ng-dirty {
+		border-color: #FA787E;
+	}
+	.ng-valid.ng-dirty {
+		border-color: #78FA89;
+	}
+
+</style>

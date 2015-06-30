@@ -3,6 +3,7 @@
 var express = require('express'),
 	app = express(),
 	routes = express.Router(),
+	bodyParser = require('body-parser'),
 	db = require('./database'),
 	//path is a node.js module that contains utilites for handling and transforming file paths
 	path = require('path');
@@ -22,8 +23,9 @@ var indexHtmlPath = path.join(__dirname, '../index.html');
 app.use(express.static(publicPath));
 app.use(express.static(bowerPath));
 
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
+// Parse our POST and PUT bodies.
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/api', require('./routes'));
 
