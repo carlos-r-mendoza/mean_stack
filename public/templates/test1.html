@@ -11,7 +11,7 @@
 			<span class='inline'>
 				<strong>Name: </strong>{{customer.firstName | noInfoFilter}} {{customer.lastName | noInfoFilter}} | 
 				<strong>Email: </strong>{{customer.email | noInfoFilter}} | 
-				<strong>Primary Phone: </strong>{{customer.phones[0] | noInfoFilter}}
+				<strong>Phone: </strong>{{customer.phones[0] | noInfoFilter}}
 			</span>
 			<div class='row' ng-if='customerInfo'>
 				<p class='updatedInfo text-center'>Entry was created on <strong>{{customer.createdAt | date:'medium'}}</strong></p>

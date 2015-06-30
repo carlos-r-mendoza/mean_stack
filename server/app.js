@@ -10,9 +10,13 @@ var express = require('express'),
 
 module.exports = app;
 
+// for Heroku purposes
+var port = Number(process.env.PORT || 3000);
+
+app.listen(port);
+
 db.on('error', console.error.bind(console, 'mongodb connection error:'));
 db.once('open', function (callback){
-	app.listen(3000);
 	console.log('mongodb connected!');
 });
 
