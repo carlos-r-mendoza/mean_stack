@@ -2,7 +2,9 @@
 
 var mongoose = require('mongoose');
 
-var db = mongoose.connect('mongodb://localhost/mean-stack').connection;
+var DATABASE_URI = process.env.MONGOLAB_URI || 'mongodb://localhost/mean-stack';
+
+var db = mongoose.connect(DATABASE_URI).connection;
 
 require('./models/test1/product-model');
 require('./models/test1/customer-model');
